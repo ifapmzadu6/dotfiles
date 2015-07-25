@@ -20,29 +20,29 @@ NeoBundle 'Shougo/vimproc.vim', {
             \    },
             \ }
 NeoBundle 'Shougo/unite.vim'
-NeoBundleLazy 'Shougo/neocomplcache'
-NeoBundleLazy 'Shougo/neosnippet'
-NeoBundleLazy 'Shougo/neosnippet-snippets'
-NeoBundleLazy 'nathanaelkane/vim-indent-guides'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " C++
-NeoBundleLazy 'Rip-Rip/clang_complete'
+NeoBundle 'Rip-Rip/clang_complete'
 
 " Golang
-NeoBundleLazy 'scrooloose/syntastic'
+NeoBundle 'scrooloose/syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 
-NeoBundleLazy 'fatih/vim-go'
-NeoBundleLazy 'dgryski/vim-godef'
-NeoBundleLazy 'vim-jp/vim-go-extra'
-NeoBundleLazy 'Blackrush/vim-gocode'
+NeoBundle 'fatih/vim-go'
+NeoBundle 'dgryski/vim-godef'
+NeoBundle 'vim-jp/vim-go-extra'
+NeoBundle 'Blackrush/vim-gocode'
 
 " JavaScript
-NeoBundleLazy 'pangloss/vim-javascript'
+NeoBundle 'pangloss/vim-javascript'
 
 "Lisp Scheme
-NeoBundleLazy 'git://github.com/aharisu/vim_goshrepl.git'
+NeoBundle 'git://github.com/aharisu/vim_goshrepl.git'
  
 call neobundle#end()
  
