@@ -20,29 +20,29 @@ NeoBundle 'Shougo/vimproc.vim', {
             \    },
             \ }
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundleLazy 'Shougo/neocomplcache'
+NeoBundleLazy 'Shougo/neosnippet'
+NeoBundleLazy 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'nathanaelkane/vim-indent-guides'
 
 " C++
-NeoBundle 'Rip-Rip/clang_complete'
+NeoBundleLazy 'Rip-Rip/clang_complete'
 
 " Golang
-NeoBundle 'scrooloose/syntastic'
+NeoBundleLazy 'scrooloose/syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 
-NeoBundle 'fatih/vim-go'
-NeoBundle 'dgryski/vim-godef'
-NeoBundle 'vim-jp/vim-go-extra'
-NeoBundle 'Blackrush/vim-gocode'
+NeoBundleLazy 'fatih/vim-go'
+NeoBundleLazy 'dgryski/vim-godef'
+NeoBundleLazy 'vim-jp/vim-go-extra'
+NeoBundleLazy 'Blackrush/vim-gocode'
 
 " JavaScript
-NeoBundle 'pangloss/vim-javascript'
+NeoBundleLazy 'pangloss/vim-javascript'
 
 "Lisp Scheme
-NeoBundle 'git://github.com/aharisu/vim_goshrepl.git'
+NeoBundleLazy 'git://github.com/aharisu/vim_goshrepl.git'
  
 call neobundle#end()
  

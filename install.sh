@@ -24,7 +24,6 @@ wget -nv https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 mv -f git-prompt.sh .git-prompt.sh
 
 # vim
-mkdir ~/.vim
 ln -sf ~/dotfiles/colors ~/.vim/colors
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
 
