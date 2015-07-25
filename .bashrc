@@ -1,5 +1,7 @@
+# bash
+export PATH=/usr/local/bin:$PATH
 
-
+# git
 source ~/.git-prompt.sh
 source ~/.git-completion.bash
 GIT_PROMPT_ONLY_IN_REPO=true
