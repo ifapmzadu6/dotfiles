@@ -9,9 +9,7 @@ ln -sf ~/dotfiles/.bashrc ~/.bashrc
 
 
 # vim
-ln -sf ~/dotfiles/colors ~/.vim
-ln -sf ~/dotfiles/ftplugin ~/.vim
-ln -sf ~/dotfiles/autoload ~/.vim
+ln -sf ~/dotfiles/colors ~/.vim/colors
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
 
 # install neobundle
