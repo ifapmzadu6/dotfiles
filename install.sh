@@ -9,6 +9,7 @@ ln -sf ~/dotfiles/.bashrc ~/.bashrc
 
 
 # vim
+mkdir ~/.vim
 ln -sf ~/dotfiles/colors ~/.vim/colors
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
 
