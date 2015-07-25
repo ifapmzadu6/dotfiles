@@ -23,7 +23,7 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundleLazy 'nathanaelkane/vim-indent-guides'
 
 " C++
 NeoBundle 'Rip-Rip/clang_complete'
