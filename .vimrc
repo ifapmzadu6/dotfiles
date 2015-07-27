@@ -87,7 +87,6 @@ augroup vimrcEx
 augroup END
 
 "NeoComplete"
-let g:acp_enableAtStartup = 0
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_min_syntax_length = 3
@@ -135,18 +134,8 @@ let g:clang_complete_auto=0
 let g:clang_auto_select=0
 let g:clang_use_library=1
 let g:clang_debug=1
-let g:clang_user_options = '-std=c++11'
+let g:clang_user_options = '-std=c++11 -stdlib=libc++'
 let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
-
-
-" vim-indent-guides
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_auto_colors=0
-let g:indent_guides_guide_size=1
-let g:indent_guides_start_level=2
-let g:indent_guides_color_change_percent=30
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#262626 ctermbg=239
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#3c3c3c ctermbg=236
 
 
 "Golang
