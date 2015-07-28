@@ -60,6 +60,7 @@ NeoBundleCheck
 colorscheme hybrid
 syntax enable
 
+set title
 set nocompatible
 set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start

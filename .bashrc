@@ -1,5 +1,22 @@
+
 # bash
 export PATH=/usr/local/bin:$PATH
+
+# if mac
+if [ "$(uname)" == 'Darwin' ]; then
+    # set current directory to window title
+    case $TERM in
+        xterm*)
+            PS1="\[\033]0;\u@\h: \w\007\]bash\\$ "
+            ;;
+        *)
+            PS1="bash\\$ "
+            ;;
+    esac
+    # set current directory to tab title
+    PROMPT_COMMAND='echo -ne "\033]0;${PWD/#${HOME}/~}\007"'
+fi
+
 
 # git
 source ~/.git-prompt.sh
@@ -17,7 +34,7 @@ export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
-# golang plugin
+# golang plugin for vim
 set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
 
 
