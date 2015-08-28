@@ -17,11 +17,6 @@ if [ "$(uname)" == 'Darwin' ]; then
     PROMPT_COMMAND='echo -ne "\033]0;${PWD/#${HOME}/~}\007"'
 fi
 
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-    . `brew --prefix`/etc/bash_completion
-fi
-
-
 # git
 source ~/.git-prompt.sh
 source ~/.git-completion.bash
