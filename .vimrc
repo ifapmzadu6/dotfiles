@@ -34,7 +34,7 @@ let g:syntastic_auto_loc_list=2
 let g:syntastic_mode_map = { 'mode': 'passive',
     \ 'active_filetypes': ['go'] }
 let g:syntastic_go_checkers = ['go', 'golint']
-
+let g:syntastic_javascript_checker = "jshint"
 
 NeoBundle 'fatih/vim-go'
 NeoBundle 'dgryski/vim-godef'
@@ -43,8 +43,14 @@ NeoBundle 'Blackrush/vim-gocode'
 
 " JavaScript
 NeoBundle 'pangloss/vim-javascript'
+NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
 
-"Lisp Scheme
+" Web
+NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'othree/html5.vim'
+
+
+" Lisp Scheme
 NeoBundle 'git://github.com/aharisu/vim_goshrepl.git'
  
 call neobundle#end()
