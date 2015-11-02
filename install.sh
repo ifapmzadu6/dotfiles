@@ -30,7 +30,6 @@ wget -nv https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 mv -f git-prompt.sh .git-prompt.sh
 
 # vim
-ln -sf ~/dotfiles/colors ~/.vim/colors
 unlink ~/.vimrc
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
 

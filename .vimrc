@@ -23,13 +23,16 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'scrooloose/syntastic'
+
+" ColorScheme
+NeoBundle 'w0ng/vim-hybrid'
 
 " C++
 NeoBundle 'Rip-Rip/clang_complete'
 
 " Golang
 NeoBundle 'fatih/vim-go'
-NeoBundle 'scrooloose/syntastic'
 
 " JavaScript
 NeoBundle 'pangloss/vim-javascript'
@@ -52,9 +55,9 @@ filetype plugin indent on
 " End Neobundle Settings.
 "-------------------------
 
-
+syntax on
+set background=dark
 colorscheme hybrid
-syntax enable
 
 set title
 set nocompatible
@@ -82,6 +85,7 @@ augroup vimrcEx
     au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
     \ exe "normal g`\"" | endif
 augroup END
+
 
 "NeoComplete"
 let g:acp_enableAtStartup = 0
@@ -128,17 +132,20 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 
-" ------------------- clang_complete -------------
-"  " neocomplcacheとの競合を避けるため、自動呼び出しはOff
+" C++
+let b:syntastic_cpp_cflags = '-std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_include_dirs = ['/usr/local/include', '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include']
+
+" clang_complete
 let g:clang_complete_auto=0
 let g:clang_auto_select=0
 let g:clang_use_library=1
 let g:clang_debug=1
-let g:clang_user_options = '-std=c++11 -stdlib=libc++'
-let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang'
+let g:clang_user_options = '-std=c++11 -stdlib=libc++ -I/usr/local/include -L/usr/local/lib'
+let g:clang_library_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
 
 
-"Golang
+" Golang
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
