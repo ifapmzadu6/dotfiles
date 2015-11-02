@@ -28,9 +28,6 @@ NeoBundle 'scrooloose/syntastic'
 " ColorScheme
 NeoBundle 'w0ng/vim-hybrid'
 
-" C++
-NeoBundle 'Rip-Rip/clang_complete'
-
 " Golang
 NeoBundle 'fatih/vim-go'
 
@@ -128,7 +125,7 @@ autocmd FileType cpp setlocal omnifunc=cppcomplete#Complete
 if !exists('g:neocomplete#sources#include#paths')
     let g:neocomplete#sources#include#paths = {}
 endif
-let g:neocomplete#sources#include#paths.cpp = '.,/usr/local/include,/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include'
+let g:neocomplete#sources#include#paths.cpp = '.,/usr/local/include'
 
 
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -141,15 +138,7 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " C++
 let b:syntastic_cpp_cflags = '-std=c++11 -stdlib=libc++'
-let g:syntastic_cpp_include_dirs = ['/usr/local/include', '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include']
-
-let g:clang_complete_auto=0
-let g:clang_auto_select=0
-let g:clang_use_library=1
-let g:clang_debug=1
-let g:clang_user_options = '-std=c++11 -stdlib=libc++ -I/usr/local/include -L/usr/local/lib'
-let g:clang_library_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
-
+let g:syntastic_cpp_include_dirs = ['/usr/local/include']
 
 " Golang
 let g:syntastic_always_populate_loc_list = 1
@@ -160,4 +149,11 @@ let g:syntastic_check_on_wq = 0
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
+
+
+
+
 
