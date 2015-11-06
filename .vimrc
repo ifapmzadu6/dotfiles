@@ -19,11 +19,15 @@ NeoBundle 'Shougo/vimproc.vim', {
             \     'unix' : 'gmake',
             \    },
             \ }
-NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'scrooloose/syntastic'
+
+" C++
+NeoBundle 'vim-jp/vim-cpp'
+NeoBundle 'Mizuchi/STL-Syntax'
+NeoBundle 'Rip-Rip/clang_complete'
 
 " ColorScheme
 NeoBundle 'w0ng/vim-hybrid'
@@ -84,8 +88,15 @@ augroup vimrcEx
 augroup END
 
 
+
+
 "NeoComplete"
 let g:acp_enableAtStartup = 0
+let g:neocomplete#enable_complete_select = 1
+let completeopt_save = &completeopt
+set completeopt+=noinsert,noselect
+"let g:neocomplete#enable_complete_select = 1
+"let g:neocomplete#enable_auto_select = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 3
@@ -110,7 +121,6 @@ endfunction
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
 let g:neocomplete#enable_auto_select = 1
 
@@ -136,9 +146,25 @@ let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
+
 " C++
 let b:syntastic_cpp_cflags = '-std=c++11 -stdlib=libc++'
 let g:syntastic_cpp_include_dirs = ['/usr/local/include']
+
+" clang_complete
+let g:neocomplete#force_overwrite_completefunc = 1
+"if !exists('g:neocomplete#force_omni_input_patterns')
+"    let g:neocomplete#force_omni_input_patterns = {}
+"endif
+"let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+"let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+let g:clang_complete_auto = 0
+let g:clang_auto_select = 0
+let g:clang_use_library = 1
+let g:clang_library_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
+let g:clang_user_options = '-std=c++11 -stdlib=libc++'
+
+
 
 " Golang
 let g:syntastic_always_populate_loc_list = 1
