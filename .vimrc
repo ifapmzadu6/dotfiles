@@ -31,6 +31,7 @@ NeoBundle 'Rip-Rip/clang_complete'
 
 " ColorScheme
 NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'chriskempson/vim-tomorrow-theme'
 
 " Golang
 NeoBundle 'fatih/vim-go'
@@ -57,8 +58,6 @@ filetype plugin indent on
 "-------------------------
 
 syntax on
-set background=dark
-colorscheme hybrid
 
 set title
 set nocompatible
@@ -80,6 +79,14 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+
+
+set background=dark
+"colorscheme hybrid
+colorscheme Tomorrow-Night
+
+
+
 
 " 前回開いたところからファイルを編集 "
 augroup vimrcEx
@@ -148,6 +155,7 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 
 " C++
+let g:syntastic_cpp_compiler = 'clang++'
 let b:syntastic_cpp_cflags = '-std=c++11 -stdlib=libc++'
 let g:syntastic_cpp_include_dirs = ['/usr/local/include']
 
