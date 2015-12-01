@@ -23,6 +23,8 @@ NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'scrooloose/syntastic'
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'plasticboy/vim-markdown'
 
 " C++
 NeoBundle 'vim-jp/vim-cpp'
@@ -46,7 +48,7 @@ NeoBundle 'othree/html5.vim'
 
 
 " Lisp Scheme
-NeoBundle 'git://github.com/aharisu/vim_goshrepl.git'
+NeoBundle 'aharisu/vim_goshrepl.git'
  
 call neobundle#end()
  
@@ -73,26 +75,35 @@ set whichwrap=h,l
 set nowrapscan
 set ignorecase
 set smartcase
-set hidden
 set syn=auto
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-
-
+set cursorline
+set scrolloff=8
+set sidescrolloff=16
+set sidescroll=1
+set autoread
+set ambiwidth=double
+set laststatus=2
 set background=dark
-"colorscheme hybrid
-colorscheme Tomorrow-Night
-
-
-
+set clipboard=unnamed
+colorscheme hybrid
+" colorscheme Tomorrow-Night
 
 " 前回開いたところからファイルを編集 "
 augroup vimrcEx
     au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
     \ exe "normal g`\"" | endif
 augroup END
+
+
+
+" itchyny/lightline.vim
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ }
 
 
 
@@ -154,25 +165,26 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 
+" Markdown
+let g:vim_markdown_folding_disabled=1
+
 " C++
 let g:syntastic_cpp_compiler = 'clang++'
-let b:syntastic_cpp_cflags = '-std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
 let g:syntastic_cpp_include_dirs = ['/usr/local/include']
 
 " clang_complete
 let g:neocomplete#force_overwrite_completefunc = 1
-"if !exists('g:neocomplete#force_omni_input_patterns')
-"    let g:neocomplete#force_omni_input_patterns = {}
-"endif
-"let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-"let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
 let g:clang_use_library = 1
 let g:clang_library_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
 let g:clang_user_options = '-std=c++11 -stdlib=libc++'
-
-
 
 " Golang
 let g:syntastic_always_populate_loc_list = 1

@@ -13,8 +13,11 @@
 	br = branch
 	l = log --format='%C(yellow)%H  %C(red) %cd  %C(green) %cn  %Creset%s'
     pd = !git status && git add . && git commit -m update && git push origin develop
+    fetch = fetch -p
 
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+[core]
+	editor = vim -c \"set fenc=utf-8\"
