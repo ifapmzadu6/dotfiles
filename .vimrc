@@ -23,7 +23,6 @@ NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'scrooloose/syntastic'
-NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'plasticboy/vim-markdown'
 
 " C++
@@ -79,13 +78,11 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set cursorline
 set scrolloff=8
 set sidescrolloff=16
 set sidescroll=1
 set autoread
 set ambiwidth=double
-set laststatus=2
 set background=dark
 set clipboard=unnamed
 colorscheme hybrid
