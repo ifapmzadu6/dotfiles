@@ -46,7 +46,6 @@ NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascr
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'othree/html5.vim'
 
-
 " Lisp Scheme
 NeoBundle 'aharisu/vim_goshrepl.git'
  
@@ -98,8 +97,6 @@ augroup vimrcEx
     \ exe "normal g`\"" | endif
 augroup END
 
-
-
 " itchyny/lightline.vim
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
@@ -108,11 +105,9 @@ let g:lightline = {
 
 "NeoComplete"
 let g:acp_enableAtStartup = 0
-let g:neocomplete#compl_no_insert = 1 
-let g:neocomplete#compl_no_select = 1 
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#sources#syntax#min_keyword_length = 2
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplete#sources#dictionary#dictionaries = {
             \ 'default': '',
@@ -135,7 +130,6 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
-
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -149,7 +143,6 @@ if !exists('g:neocomplete#sources#include#paths')
 endif
 let g:neocomplete#sources#include#paths.cpp = '.,/usr/local/include'
 
-
 if !exists('g:neocomplete#sources#omni#input_patterns')
     let g:neocomplete#sources#omni#input_patterns = {}
 endif
@@ -160,7 +153,7 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 
 " Markdown
-let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_folding_disabled = 1
 
 " C++
 let g:syntastic_cpp_compiler = 'clang++'
@@ -191,9 +184,4 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
-
-
-
-
-
 
