@@ -87,6 +87,7 @@ set background=dark
 set clipboard=unnamed
 colorscheme hybrid
 " colorscheme Tomorrow-Night
+set t_Co=256
 
 " 前回開いたところからファイルを編集 "
 augroup vimrcEx
