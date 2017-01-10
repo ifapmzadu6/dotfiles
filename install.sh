@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # move Home Directory
 cd ~
@@ -15,6 +15,7 @@ ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 
 # remove neobundle
 rm -rf ~/.vim
+mkdir ~/.vim
 
 # install neobundle
 curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > install.sh
@@ -32,4 +33,5 @@ mv -f git-prompt.sh .git-prompt.sh
 # vim
 unlink ~/.vimrc
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
+
 

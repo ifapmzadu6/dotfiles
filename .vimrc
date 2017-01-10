@@ -52,6 +52,8 @@ call neobundle#end()
  
 " Required:
 filetype plugin indent on
+
+NeoBundleCheck
  
 "-------------------------
 " End Neobundle Settings.
