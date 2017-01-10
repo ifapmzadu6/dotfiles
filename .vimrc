@@ -83,6 +83,7 @@ set sidescrolloff=16
 set sidescroll=1
 set autoread
 set ambiwidth=double
+set breakindent
 set background=dark
 set clipboard=unnamed
 colorscheme hybrid
