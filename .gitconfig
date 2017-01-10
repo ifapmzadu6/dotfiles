@@ -14,7 +14,6 @@
 	l = log --format='%C(yellow)%H  %C(red) %cd  %C(green) %cn  %Creset%s'
     pd = !git status && git add . && git commit -m update && git push origin develop
     fetch = fetch -p
-
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f

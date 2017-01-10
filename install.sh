@@ -17,10 +17,10 @@ ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 rm -rf ~/.vim
 mkdir ~/.vim
 
-# install neobundle
-curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > install.sh
-sh ./install.sh
-rm install.sh
+# install dein
+curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
+sh ./installer.sh ~/.vim
+rm installer.sh
 
 # install git-completion.bash
 wget -nv https://raw.github.com/git/git/master/contrib/completion/git-completion.bash

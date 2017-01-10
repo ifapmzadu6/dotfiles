@@ -1,63 +1,68 @@
-"---------------------------
-" Start Neobundle Settings.
-"---------------------------
-" bundleで管理するディレクトリを指定
-set runtimepath+=~/.vim/bundle/neobundle.vim/
- 
-" Required:
-call neobundle#begin(expand('~/.vim/bundle/'))
- 
-" neobundle自体をneobundleで管理
-NeoBundleFetch 'Shougo/neobundle.vim'
+" Start Dein.vim
+if &compatible
+  set nocompatible
+endif
+set runtimepath+=~/.vim/repos/github.com/Shougo/dein.vim
 
-NeoBundle 'Shougo/vimproc.vim', {
-            \ 'build' : {
-            \     'windows' : 'tools\\update-dll-mingw',
-            \     'cygwin' : 'make -f make_cygwin.mak',
-            \     'mac' : 'make -f make_mac.mak',
-            \     'linux' : 'make',
-            \     'unix' : 'gmake',
-            \    },
-            \ }
-NeoBundle 'Shougo/neocomplete'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'plasticboy/vim-markdown'
+let s:dein_dir = expand('~/.cache/dein')
+
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+
+  call dein#add('Shougo/vimproc.vim', {
+              \ 'build' : {
+              \     'mac' : 'make -f make_mac.mak',
+              \     'linux' : 'make',
+              \     'unix' : 'gmake',
+              \    },
+              \ })
+
+  call dein#add('Shougo/neocomplete.vim')
+  call dein#add('Shougo/neosnippet.vim')
+  call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('vim-syntastic/syntastic')
+  call dein#add('plasticboy/vim-markdown')
 
 " C++
-NeoBundle 'vim-jp/vim-cpp'
-NeoBundle 'Mizuchi/STL-Syntax'
-NeoBundle 'Rip-Rip/clang_complete'
+  call dein#add('vim-jp/vim-cpp')
+  call dein#add('Mizuchi/STL-Syntax')
+  call dein#add('Rip-Rip/clang_complete')
 
 " ColorScheme
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'chriskempson/vim-tomorrow-theme'
+ call dein#add('w0ng/vim-hybrid')
+ call dein#add('chriskempson/vim-tomorrow-theme')
 
 " Golang
-NeoBundle 'fatih/vim-go'
+call dein#add('fatih/vim-go')
 
 " JavaScript
-NeoBundle 'pangloss/vim-javascript'
-NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
+call dein#add('pangloss/vim-javascript')
+call dein#add('jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}})
 
 " Web
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'othree/html5.vim'
+call dein#add('hail2u/vim-css3-syntax')
+call dein#add('othree/html5.vim')
 
 " Lisp Scheme
-NeoBundle 'aharisu/vim_goshrepl.git'
- 
-call neobundle#end()
- 
-" Required:
-filetype plugin indent on
+call dein#add('aharisu/vim_goshrepl.git')
 
-NeoBundleCheck
- 
-"-------------------------
-" End Neobundle Settings.
-"-------------------------
+
+  call dein#end()
+  call dein#save_state()
+endif
+
+if dein#check_install()
+  call dein#install()
+endif
+
+filetype plugin indent on
+" End Dein.vim
+
+
+
+
+
+
 
 syntax on
 
