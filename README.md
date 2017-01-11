@@ -1,6 +1,6 @@
 # dotfiles
 
-Available on Mac/Linux.
+Available on Mac/Linux(ubuntu).
 
 
 ## Prepare
@@ -10,10 +10,10 @@ Available on Mac/Linux.
 brew install wget curl git vim
 ```
 
-### Linux
+### Linux(ubuntu)
 ```
-sudo apt-get update && upgrade
-sudo apt-get install wget curl git vim
+sudo apt update && upgrade
+sudo apt install wget curl git vim
 ```
 
 ## Install
