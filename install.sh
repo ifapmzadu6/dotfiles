@@ -13,7 +13,7 @@ ln -sf ~/dotfiles/.bashrc ~/.bashrc
 unlink ~/.gitconfig
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 
-# remove neobundle
+# clear .vim
 rm -rf ~/.vim
 mkdir ~/.vim
 

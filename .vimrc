@@ -16,11 +16,12 @@ if dein#load_state(s:dein_dir)
               \     'unix' : 'gmake',
               \    },
               \ })
-
   call dein#add('Shougo/neocomplete.vim')
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
   call dein#add('vim-syntastic/syntastic')
+
+" markdown
   call dein#add('plasticboy/vim-markdown')
 
 " C++
@@ -29,23 +30,11 @@ if dein#load_state(s:dein_dir)
   call dein#add('Rip-Rip/clang_complete')
 
 " ColorScheme
- call dein#add('w0ng/vim-hybrid')
- call dein#add('chriskempson/vim-tomorrow-theme')
+  call dein#add('w0ng/vim-hybrid')
+  call dein#add('chriskempson/vim-tomorrow-theme')
 
 " Golang
-call dein#add('fatih/vim-go')
-
-" JavaScript
-call dein#add('pangloss/vim-javascript')
-call dein#add('jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}})
-
-" Web
-call dein#add('hail2u/vim-css3-syntax')
-call dein#add('othree/html5.vim')
-
-" Lisp Scheme
-call dein#add('aharisu/vim_goshrepl.git')
-
+  call dein#add('fatih/vim-go')
 
   call dein#end()
   call dein#save_state()
@@ -55,15 +44,11 @@ if dein#check_install()
   call dein#install()
 endif
 
-filetype plugin indent on
 " End Dein.vim
 
 
 
-
-
-
-
+filetype plugin indent on
 syntax on
 
 set title
@@ -93,23 +78,16 @@ set ambiwidth=double
 set breakindent
 set background=dark
 set clipboard=unnamed
-colorscheme hybrid
-" colorscheme Tomorrow-Night
 set t_Co=256
+colorscheme hybrid
 
-" 前回開いたところからファイルを編集 "
+" 前回開いたところからファイルを編集
 augroup vimrcEx
     au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
     \ exe "normal g`\"" | endif
 augroup END
 
-" itchyny/lightline.vim
-let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
-      \ }
-
-
-"NeoComplete"
+" NeoComplete
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
@@ -178,16 +156,4 @@ let g:clang_auto_select = 0
 let g:clang_use_library = 1
 let g:clang_library_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
 let g:clang_user_options = '-std=c++11 -stdlib=libc++'
-
-" Golang
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
 
