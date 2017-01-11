@@ -31,7 +31,6 @@ if dein#load_state(s:dein_dir)
 
 " ColorScheme
   call dein#add('w0ng/vim-hybrid')
-  call dein#add('chriskempson/vim-tomorrow-theme')
 
 " Golang
   call dein#add('fatih/vim-go')
