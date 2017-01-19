@@ -12,9 +12,9 @@
 	cm = commit
 	br = branch
 	l = log --format='%C(yellow)%H  %C(red) %cd  %C(green) %cn  %Creset%s'
-    pd = !git status && git add . && git commit -m update && git push origin develop
-    fetch = fetch -p
-    	ignore = rm -r --cached . && git add . && git commit -m "New .gitignore has been applied."
+	pd = !git status && git add . && git commit -m update && git push origin develop
+	fetch = fetch -p
+	ignore = rm -r --cached . && git add . && git commit -m "New .gitignore has been applied."
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
