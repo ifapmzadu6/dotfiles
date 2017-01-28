@@ -9,13 +9,7 @@ let s:dein_dir = expand('~/.cache/dein')
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
 
-  call dein#add('Shougo/vimproc.vim', {
-              \ 'build' : {
-              \     'mac' : 'make -f make_mac.mak',
-              \     'linux' : 'make',
-              \     'unix' : 'gmake',
-              \    },
-              \ })
+  call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
   call dein#add('Shougo/neocomplete.vim')
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
