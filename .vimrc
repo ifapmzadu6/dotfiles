@@ -9,7 +9,6 @@ let s:dein_dir = expand('~/.cache/dein')
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
 
-  call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
   call dein#add('Shougo/neocomplete.vim')
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
@@ -20,8 +19,7 @@ if dein#load_state(s:dein_dir)
 
 " C++
   call dein#add('vim-jp/vim-cpp')
-  call dein#add('Mizuchi/STL-Syntax')
-  call dein#add('Rip-Rip/clang_complete')
+  call dein#add('justmao945/vim-clang')
 
 " ColorScheme
   call dein#add('w0ng/vim-hybrid')
@@ -137,16 +135,7 @@ let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
 let g:syntastic_cpp_include_dirs = ['/usr/local/include']
 
-" clang_complete
-let g:neocomplete#force_overwrite_completefunc = 1
-if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-let g:clang_complete_auto = 0
-let g:clang_auto_select = 0
+" justmao945/vim-clang
+let g:clang_auto = 0
 let g:clang_use_library = 1
-let g:clang_library_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
-let g:clang_user_options = '-std=c++11 -stdlib=libc++'
 
