@@ -6,8 +6,6 @@ filetype plugin indent on
 " cursor
 set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
-set cursorline
-set cursorcolumn
 " info
 set number
 set ruler
