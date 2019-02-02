@@ -17,3 +17,6 @@
 [core]
     editor = vim -c \"set fenc=utf-8\"
 
+[user]
+	email = ifapmzadu6@gmail.com
+	name = ifapmzadu6
