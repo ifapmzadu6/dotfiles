@@ -79,11 +79,8 @@ set updatetime=250
 let g:lightline = {
     \ 'colorscheme': 'jellybeans',
     \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'filename' ],
-    \             [ 'fugitive'] ],
-    \   'right': [ [ 'percent' ],
-    \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+    \   'left': [['mode'], ['filename'], ['fugitive']],
+    \   'right': [['percent'], ['fileformat'], ['fileencoding']]
     \ },
     \ 'inactive': {
     \   'left': [['filename']],
@@ -93,27 +90,23 @@ let g:lightline = {
     \   'mode': 'LightLineMode',
     \   'fugitive': 'LightLineFugitive',
     \   'filename': 'LightLineFilename',
-    \   'filetype': 'LightLineFiletype',
     \   'fileformat': 'LightLineFileformat',
     \   'fileencoding': 'LightLineFileencoding',
     \ },
     \ }
 function! LightLineMode()
-    return winwidth(0) > 70 ? (lightline#mode()) : ''
+    return winwidth(0)>70 ? (lightline#mode()) : ''
 endfunction
 function! LightLineFugitive()
-    return winwidth(0) > 70 ? (exists("*fugitive#head") ? fugitive#head() : '') : ''
+    return winwidth(0)>70 ? (exists("*fugitive#head") ? fugitive#head() : '') : ''
 endfunction
 function! LightLineFilename()
-    return winwidth(0) > 70 ? (expand('%t') != '' ? expand('%t') : 'No File') : ''
-endfunction
-function! LightLineFiletype()
-    return winwidth(0) > 70 ? (strlen(&filetype) ? (&filetype) : '') : ''
+    return winwidth(0)>70 ? (expand('%t') != '' ? expand('%t') : 'No File') : ''
 endfunction
 function! LightLineFileformat()
-    return winwidth(0) > 70 ? (strlen(&fileformat) ? (&fileformat) : '') : ''
+    return winwidth(0)>70 ? (strlen(&fileformat) ? (&fileformat) : '') : ''
 endfunction
 function! LightLineFileencoding()
-    return winwidth(0) > 70 ? (strlen(&fileencoding) ? (&fileencoding) : '') : ''
+    return winwidth(0)>70 ? (strlen(&fileencoding) ? (&fileencoding) : '') : ''
 endfunction
 
