@@ -37,6 +37,7 @@ set autoread
 set noswapfile
 set hidden
 " font
+set encoding=UTF-8
 set ambiwidth=double
 set clipboard=unnamed
 " color
@@ -45,6 +46,7 @@ set background=dark
 colorscheme hybrid
 " status bar
 set laststatus=2
+set noshowmode
 " window focus
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -71,9 +73,47 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " vim-fugitive
 autocmd QuickFixCmdPost *grep* cwindow
-" lightline.vim
-let g:lightline = {'colorscheme': 'jellybeans'}
 " vim-gitgutter
-set updatetime=500
-
+set updatetime=250
+" lightline.vim
+let g:lightline = {
+    \ 'colorscheme': 'jellybeans',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'filename' ],
+    \             [ 'fugitive'] ],
+    \   'right': [ [ 'percent' ],
+    \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+    \ },
+    \ 'inactive': {
+    \   'left': [['filename']],
+    \   'right': []
+    \ },
+    \ 'component_function': {
+    \   'mode': 'LightLineMode',
+    \   'fugitive': 'LightLineFugitive',
+    \   'filename': 'LightLineFilename',
+    \   'filetype': 'LightLineFiletype',
+    \   'fileformat': 'LightLineFileformat',
+    \   'fileencoding': 'LightLineFileencoding',
+    \ },
+    \ }
+function! LightLineMode()
+    return winwidth(0) > 70 ? (lightline#mode()) : ''
+endfunction
+function! LightLineFugitive()
+    return winwidth(0) > 70 ? (exists("*fugitive#head") ? fugitive#head() : '') : ''
+endfunction
+function! LightLineFilename()
+    return winwidth(0) > 70 ? (expand('%t') != '' ? expand('%t') : 'No File') : ''
+endfunction
+function! LightLineFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? (&filetype) : '') : ''
+endfunction
+function! LightLineFileformat()
+    return winwidth(0) > 70 ? (strlen(&fileformat) ? (&fileformat) : '') : ''
+endfunction
+function! LightLineFileencoding()
+    return winwidth(0) > 70 ? (strlen(&fileencoding) ? (&fileencoding) : '') : ''
+endfunction
 
