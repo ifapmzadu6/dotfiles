@@ -1,8 +1,17 @@
 #!/bin/bash
 
 # gitconfig
-unlink ~/.gitconfig
-ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
+git config --global color.diff auto
+git config --global color.status auto
+git config --global color.branch auto
+git config --global color.interactive auto
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.cm commit
+git config --global alias.br branch
+git config --global alias.l "log --format='%C(yellow)%H  %C(red) %cd  %C(green) %cn  %Creset%s'"
+git config --global core.editor "vim -c 'set fenc=utf-8'"
+git lfs install
 
 # vimrc
 unlink ~/.vimrc
