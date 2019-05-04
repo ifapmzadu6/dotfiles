@@ -6,5 +6,5 @@
     -  Mac: `brew install wget curl git vim`
     -  Linux(ubuntu): `sudo apt install wget curl git vim`
 2. Install dotfiles
-    - `mv ~/ && git clone https://github.com/ifapmzadu6/dotfiles.git && dotfiles/install.sh`
+    - `git clone https://github.com/ifapmzadu6/dotfiles.git && dotfiles/install.sh`
 
