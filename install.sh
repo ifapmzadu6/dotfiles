@@ -1,23 +1,24 @@
 #!/bin/bash
+cd `dirname $0`
 
-# gitconfig
-git config --global color.diff auto
-git config --global color.status auto
-git config --global color.branch auto
-git config --global color.interactive auto
+# git .gitconfig
 git config --global alias.st status
 git config --global alias.co checkout
 git config --global alias.cm commit
 git config --global alias.br branch
 git config --global alias.l "log --format='%C(yellow)%H  %C(red) %cd  %C(green) %cn  %Creset%s'"
+git config --global color.diff auto
+git config --global color.status auto
+git config --global color.branch auto
+git config --global color.interactive auto
 git config --global core.editor "vim -c 'set fenc=utf-8'"
+# git plugins
 git lfs install
 
-# vimrc
+# vim .vimrc
 unlink ~/.vimrc
-ln -sf ~/dotfiles/.vimrc ~/.vimrc
-
-# vim plugin
+ln -sf $(pwd)/.vimrc ~/.vimrc
+# vim plugins
 rm -rf ~/.vim
 mkdir -p ~/.vim/pack/mypackage/start
 cd ~/.vim/pack/mypackage/start
