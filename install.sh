@@ -12,8 +12,6 @@ git config --global color.status auto
 git config --global color.branch auto
 git config --global color.interactive auto
 git config --global core.editor "vim -c 'set fenc=utf-8'"
-# git plugins
-git lfs install
 
 # vim .vimrc
 unlink ~/.vimrc
