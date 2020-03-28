@@ -16,7 +16,7 @@ git config --global core.editor "vim -c 'set fenc=utf-8'"
 
 # vim .vimrc
 unlink ~/.vimrc
-ln -sf $(pwd)/.vimrc ~/.vimrc
+ln -sf $(pwd)/vimrc ~/.vimrc
 # vim plugins
 rm -rf ~/.vim
 mkdir -p ~/.vim/pack/mypackage/start
