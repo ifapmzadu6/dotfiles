@@ -1,6 +1,9 @@
 #!/bin/bash
 cd `dirname $0`
 
+# update
+git pull
+
 # git .gitconfig
 git config --global alias.st status
 git config --global alias.co checkout
