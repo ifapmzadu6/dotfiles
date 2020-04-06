@@ -27,4 +27,4 @@ git clone https://github.com/tpope/vim-fugitive.git
 git clone https://github.com/airblade/vim-gitgutter.git
 git clone https://github.com/itchyny/lightline.vim.git
 git clone https://github.com/justinmk/vim-syntax-extra.git
-
+git clone https://github.com/editorconfig/editorconfig-vim.git
