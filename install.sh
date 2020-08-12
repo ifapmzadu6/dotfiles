@@ -12,7 +12,7 @@ git config --global alias.br branch
 git config --global alias.cp cherry-pick
 git config --global alias.l "log --format='%C(yellow)%H  %C(red) %cd  %C(green) %cn  %Creset%s'"
 git config --global color.ui auto
-git config --global core.editor "vim -c 'set fenc=utf-8'"
+git config --global core.editor vim
 
 # vim .vimrc
 unlink ~/.vimrc
