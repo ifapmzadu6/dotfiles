@@ -74,35 +74,43 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " lightline.vim
 let g:lightline = {
     \ 'colorscheme': 'jellybeans',
-    \ 'active': {
-    \   'left': [['mode'], ['filename'], ['fugitive']],
-    \   'right': [['percent'], ['fileformat'], ['fileencoding']]
-    \ },
-    \ 'inactive': {
-    \   'left': [['filename']],
-    \   'right': []
-    \ },
     \ 'component_function': {
     \   'mode': 'LightLineMode',
-    \   'fugitive': 'LightLineFugitive',
     \   'filename': 'LightLineFilename',
     \   'fileformat': 'LightLineFileformat',
     \   'fileencoding': 'LightLineFileencoding',
+    \   'filetype': 'LightLineFiletype',
+    \   'readonly': 'LightLineReadonly',
+    \   'modified': 'LightLineModified',
+    \   'percent': 'LightLinePercent',
+    \   'lineinfo': 'LightLineLineinfo',
     \ },
     \ }
 function! LightLineMode()
-    return winwidth(0)>70 ? (lightline#mode()) : ''
-endfunction
-function! LightLineFugitive()
-    return winwidth(0)>70 ? (exists("*fugitive#head") ? fugitive#head() : '') : ''
+    return (&ft !=? 'nerdtree') ? (lightline#mode()) : ''
 endfunction
 function! LightLineFilename()
-    return winwidth(0)>70 ? (expand('%t') != '' ? expand('%t') : 'No File') : ''
+    return (&ft !=? 'nerdtree') ? (expand('%:t') !=# '' ? expand('%:t') : '[No Name]') : ''
 endfunction
 function! LightLineFileformat()
-    return winwidth(0)>70 ? (strlen(&fileformat) ? (&fileformat) : '') : ''
+    return (&ft !=? 'nerdtree') ? (&fileformat) : ''
 endfunction
 function! LightLineFileencoding()
-    return winwidth(0)>70 ? (strlen(&fileencoding) ? (&fileencoding) : '') : ''
+    return (&ft !=? 'nerdtree') ? (&fileencoding) : ''
+endfunction
+function! LightLineFiletype()
+    return (&ft !=? 'nerdtree') ? (&filetype) : ''
+endfunction
+function! LightLineReadonly()
+    return ''
+endfunction
+function! LightLineModified()
+    return ''
+endfunction
+function! LightLinePercent()
+    return ''
+endfunction
+function! LightLineLineinfo()
+    return ''
 endfunction
 
