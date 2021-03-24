@@ -6,5 +6,6 @@ cd `dirname $0`
 git pull
 
 # run
-./setup.sh
+./setup_gitconfig.sh \
+    && ./setup_vim.sh
 
