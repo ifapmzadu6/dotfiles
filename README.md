@@ -10,3 +10,8 @@
 2. Install dotfiles
     - `git clone https://github.com/ifapmzadu6/dotfiles.git .dotfiles && .dotfiles/install.sh`
 
+## Update
+
+1. Update
+    - `.dotfiles/install.sh`
+

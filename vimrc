@@ -1,4 +1,6 @@
+
 "== BASIC ==============================================
+
 " basic
 set nocompatible
 set title
@@ -63,6 +65,8 @@ set noerrorbells
 " yank
 nnoremap Y y$
 set clipboard=unnamed,autoselect
+
+
 
 
 "== PLUGIN ==============================================
