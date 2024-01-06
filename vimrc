@@ -84,10 +84,10 @@ let g:lightline = {
     \   'fileformat': 'LightLineFileformat',
     \   'fileencoding': 'LightLineFileencoding',
     \   'filetype': 'LightLineFiletype',
-    \   'readonly': 'LightLineReadonly',
-    \   'modified': 'LightLineModified',
-    \   'percent': 'LightLinePercent',
-    \   'lineinfo': 'LightLineLineinfo',
+    \   'readonly': 'LightLineHidden',
+    \   'modified': 'LightLineHidden',
+    \   'percent': 'LightLineHidden',
+    \   'lineinfo': 'LightLineHidden',
     \ },
     \ }
 function! LightLineMode()
@@ -105,16 +105,7 @@ endfunction
 function! LightLineFiletype()
     return (&ft !=? 'nerdtree') ? (&filetype) : ''
 endfunction
-function! LightLineReadonly()
-    return ''
-endfunction
-function! LightLineModified()
-    return ''
-endfunction
-function! LightLinePercent()
-    return ''
-endfunction
-function! LightLineLineinfo()
+function! LightLineHidden()
     return ''
 endfunction
 
