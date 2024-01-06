@@ -83,12 +83,12 @@ let g:lightline = {
     \   'filename': 'LightLineFilename',
     \   'fileformat': 'LightLineFileformat',
     \   'fileencoding': 'LightLineFileencoding',
-    \   'filetype': 'LightLineFiletype',
+    \   'filetype': 'LightLineHidden',
     \   'readonly': 'LightLineHidden',
     \   'modified': 'LightLineHidden',
     \   'percent': 'LightLineHidden',
     \   'lineinfo': 'LightLineHidden',
-    \ },
+    \  },
     \ }
 function! LightLineMode()
     return (&ft !=? 'nerdtree') ? (lightline#mode()) : ''
@@ -101,9 +101,6 @@ function! LightLineFileformat()
 endfunction
 function! LightLineFileencoding()
     return (&ft !=? 'nerdtree') ? (&fileencoding) : ''
-endfunction
-function! LightLineFiletype()
-    return (&ft !=? 'nerdtree') ? (&filetype) : ''
 endfunction
 function! LightLineHidden()
     return ''
