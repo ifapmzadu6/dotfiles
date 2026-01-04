@@ -64,7 +64,6 @@ set visualbell t_vb=
 set noerrorbells
 " yank
 nnoremap Y y$
-set clipboard=unnamed,autoselect
 
 
 
