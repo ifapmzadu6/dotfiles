@@ -2,16 +2,22 @@
 - Available on MacOS/Linux(ubuntu).
 
 ## Install
-1. Install packages
-    -  Linux(ubuntu):
+
+1. Install prerequisites (if needed)
+    -  Linux (Ubuntu):
         - `sudo apt install git vim`
-    -  Mac
-        - do nothing
+    -  macOS:
+        - `git` and `vim` are usually pre-installed.
+
 2. Install dotfiles
-    - `git clone https://github.com/ifapmzadu6/dotfiles.git .dotfiles && .dotfiles/install.sh`
+    ```bash
+    git clone https://github.com/ifapmzadu6/dotfiles.git ~/.dotfiles && ~/.dotfiles/install.sh
+    ```
 
 ## Update
 
-1. Update
-    - `.dotfiles/install.sh`
+To update your dotfiles, simply run the installation script:
 
+```bash
+~/.dotfiles/install.sh
+```
