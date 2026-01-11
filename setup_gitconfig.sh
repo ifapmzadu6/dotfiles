@@ -1,47 +1,25 @@
 #!/bin/bash
 set -e
 
-# alias.st
-if ! git config --global --get alias.st > /dev/null; then
-    git config --global alias.st status
-fi
+set_git_config() {
+    local key=$1
+    local value=$2
+    if ! git config --global --get ${key} > /dev/null; then
+        git config --global ${key} "${value}"
+    fi
+}
 
-# alias.co
-if ! git config --global --get alias.co > /dev/null; then
-    git config --global alias.co checkout
-fi
-
-# alias.cm
-if ! git config --global --get alias.cm > /dev/null; then
-    git config --global alias.cm commit
-fi
-
-# alias.br
-if ! git config --global --get alias.br > /dev/null; then
-    git config --global alias.br branch
-fi
-
-# alias.cp
-if ! git config --global --get alias.cp > /dev/null; then
-    git config --global alias.cp cherry-pick
-fi
-
-# alias.pl
-if ! git config --global --get alias.pl > /dev/null; then
-    git config --global alias.pl pull
-fi
-
-# alias.l
-if ! git config --global --get alias.l > /dev/null; then
-    git config --global alias.l "log --format='%C(yellow)%h %C(red) %cd %C(green) %cn  %Creset%s' --date=format:'%Y/%m/%d %H:%M:%S'"
-fi
+# alias
+set_git_config "alias.st" "status"
+set_git_config "alias.co" "checkout"
+set_git_config "alias.cm" "commit"
+set_git_config "alias.br" "branch"
+set_git_config "alias.cp" "cherry-pick"
+set_git_config "alias.pl" "pull"
+set_git_config "alias.l" "log --format='%C(yellow)%h %C(red) %cd %C(green) %cn  %Creset%s' --date=format:'%Y/%m/%d %H:%M:%S'"
 
 # color.ui
-if ! git config --global --get color.ui > /dev/null; then
-    git config --global color.ui auto
-fi
+set_git_config "color.ui" "auto"
 
 # core.editor
-if ! git config --global --get core.editor > /dev/null; then
-    git config --global core.editor vim
-fi
+set_git_config "core.editor" "vim"

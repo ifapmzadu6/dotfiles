@@ -10,3 +10,4 @@ git pull
 # run
 ./setup_gitconfig.sh
 ./setup_vim.sh
+./setup_inputrc.sh

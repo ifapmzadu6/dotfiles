@@ -1,0 +1,19 @@
+# 大文字小文字を無視して補完
+set completion-ignore-case on
+
+# 補完候補が複数ある場合、1回目のTabで一覧を表示
+set show-all-if-ambiguous on
+
+# ディレクトリへのシンボリックリンクには末尾に / を付与
+set mark-symlinked-directories on
+
+# 補完時に色を付ける (ReadLine 7.0+)
+set colored-stats on
+
+# 履歴をインクリメンタルに検索 (上下矢印キー)
+# 入力中の文字列で始まる履歴のみを検索できるようになります
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# ベルを鳴らさない
+set bell-style none
