@@ -1,0 +1,19 @@
+# Ignore case for completion
+set completion-ignore-case on
+
+# Show all candidates on first Tab if ambiguous
+set show-all-if-ambiguous on
+
+# Append / to symbolic links to directories
+set mark-symlinked-directories on
+
+# Colorized completion (ReadLine 7.0+)
+set colored-stats on
+
+# Incremental history search (Up/Down arrow keys)
+# Searches history starting with the current input
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Disable audible bell
+set bell-style none
