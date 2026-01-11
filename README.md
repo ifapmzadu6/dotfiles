@@ -11,12 +11,12 @@
 
 2. Install dotfiles
     ```bash
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ifapmzadu6/dotfiles/master/install.sh)"
+    git clone https://github.com/ifapmzadu6/dotfiles.git ~/.dotfiles && ~/.dotfiles/install.sh
     ```
 
 ## Update
 
-To update your dotfiles, simply run the installation command again or execute the script directly if you have it locally:
+To update your dotfiles, simply run the installation script:
 
 ```bash
 ~/.dotfiles/install.sh
