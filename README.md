@@ -21,3 +21,7 @@ To update your dotfiles, simply run the installation script:
 ```bash
 ~/.dotfiles/install.sh
 ```
+
+## タスク
+
+- [ ] 生成したコンテンツのレビューと改善
