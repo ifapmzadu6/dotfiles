@@ -43,5 +43,6 @@ echo "Running setup scripts..."
 ./setup_gitconfig.sh
 ./setup_vim.sh
 ./setup_inputrc.sh
+./setup_zsh.sh
 
 echo "Installation complete!"
