@@ -1,8 +1,9 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
 DOTPATH="$HOME/.dotfiles"
 REPO_URL="https://github.com/ifapmzadu6/dotfiles.git"
+UPDATE_REPOSITORY=1
 
 # Check if git is installed
 if ! command -v git >/dev/null 2>&1; then
@@ -10,39 +11,49 @@ if ! command -v git >/dev/null 2>&1; then
     exit 1
 fi
 
-# Determine if running locally (inside the repo) or via curl/bootstrap
-# Try to get the directory of the script
-if [ -f "$0" ]; then
-    SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" && pwd)
+# Determine whether the checked-out script or a curl/bootstrap copy is running.
+SCRIPT_PATH=${BASH_SOURCE[0]:-}
+if [ -n "$SCRIPT_PATH" ] && [ -f "$SCRIPT_PATH" ]; then
+    SCRIPT_DIR=$(cd -- "$(dirname -- "$SCRIPT_PATH")" && pwd)
 else
     SCRIPT_DIR=""
 fi
 
-if [ -n "$SCRIPT_DIR" ] && [ -d "$SCRIPT_DIR/.git" ]; then
-    # Running from a valid local git repository
-    echo "Running locally from $SCRIPT_DIR..."
-    cd "$SCRIPT_DIR"
-    echo "Updating repository..."
-    git pull
+if [ -n "$SCRIPT_DIR" ] && REPO_DIR=$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null); then
+    echo "Using local repository: $REPO_DIR"
 else
-    # Bootstrap mode: Clone or update to ~/.dotfiles
-    echo "Bootstrap mode detected."
-    if [ ! -d "$DOTPATH" ]; then
+    echo "Bootstrap mode detected"
+    if [ ! -e "$DOTPATH" ]; then
         echo "Cloning dotfiles to $DOTPATH..."
         git clone "$REPO_URL" "$DOTPATH"
+        UPDATE_REPOSITORY=0
+    elif ! REPO_DIR=$(git -C "$DOTPATH" rev-parse --show-toplevel 2>/dev/null); then
+        echo "Error: $DOTPATH exists but is not a Git repository." >&2
+        exit 1
     else
-        echo "Dotfiles directory ($DOTPATH) already exists. Updating..."
-        cd "$DOTPATH"
-        git pull
+        echo "Using existing repository: $DOTPATH"
     fi
-    cd "$DOTPATH"
+    if [ -z "${REPO_DIR:-}" ]; then
+        REPO_DIR=$DOTPATH
+    fi
+fi
+
+if [ "$UPDATE_REPOSITORY" -eq 1 ]; then
+    if [ -n "$(git -C "$REPO_DIR" status --porcelain)" ]; then
+        echo "Repository has local changes; skipping update."
+    elif git -C "$REPO_DIR" rev-parse --verify '@{upstream}' >/dev/null 2>&1; then
+        echo "Updating repository..."
+        git -C "$REPO_DIR" pull --ff-only
+    else
+        echo "No upstream branch is configured; skipping update."
+    fi
 fi
 
 # Run setup scripts
 echo "Running setup scripts..."
-./setup_gitconfig.sh
-./setup_vim.sh
-./setup_inputrc.sh
-./setup_zsh.sh
+bash "$REPO_DIR/setup_gitconfig.sh"
+bash "$REPO_DIR/setup_vim.sh"
+bash "$REPO_DIR/setup_inputrc.sh"
+bash "$REPO_DIR/setup_zsh.sh"
 
 echo "Installation complete!"

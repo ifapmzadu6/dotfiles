@@ -1,7 +1,8 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" && pwd)
+source "$SCRIPT_DIR/lib.sh"
 
 # .inputrc
-ln -sf "$SCRIPT_DIR/inputrc" "$HOME/.inputrc"
+link_dotfile "$SCRIPT_DIR/inputrc" "$HOME/.inputrc"
