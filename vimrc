@@ -33,7 +33,10 @@ set sidescroll=1
 " indent
 set smartindent
 set breakindent
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+augroup vimrc_filetype
+    autocmd!
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+augroup END
 " file
 set autoread
 set noswapfile
@@ -41,11 +44,19 @@ set hidden
 " font
 set encoding=UTF-8
 set ambiwidth=double
-set clipboard=unnamed
+if has('macunix')
+    set clipboard=unnamed
+elseif has('clipboard')
+    set clipboard=unnamedplus
+endif
 " color
 set t_Co=256
 set background=dark
-colorscheme hybrid
+try
+    colorscheme hybrid
+catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme default
+endtry
 " status bar
 set laststatus=2
 set noshowmode
@@ -56,6 +67,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 " open last buffer
 augroup vimrcEx
+    autocmd!
     au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
     \ exe "normal g`\"" | endif
 augroup END
@@ -71,9 +83,12 @@ nnoremap Y y$
 "== PLUGIN ==============================================
 
 " NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup vimrc_nerdtree
+    autocmd!
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && exists(':NERDTree') == 2 | NERDTree | endif
+    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
 " lightline.vim
 let g:lightline = {
     \ 'colorscheme': 'jellybeans',
@@ -106,4 +121,3 @@ function! LightLineHidden()
 endfunction
 " vim-markdown
 let g:vim_markdown_folding_disabled = 1
-

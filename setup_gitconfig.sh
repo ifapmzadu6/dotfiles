@@ -1,11 +1,12 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
 set_git_config() {
     local key=$1
     local value=$2
-    if ! git config --global --get ${key} > /dev/null; then
-        git config --global ${key} "${value}"
+    if ! git config --global --get "$key" >/dev/null; then
+        git config --global "$key" "$value"
+        echo "Configured: $key"
     fi
 }
 
