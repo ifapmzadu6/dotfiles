@@ -41,7 +41,7 @@ install_vim_plugins() (
         local status=$?
         # Once the staged directory has moved, the complete replacement is live.
         if [ -d "$staging_dir/plugins" ] && { [ -e "$staging_dir/previous" ] || [ -L "$staging_dir/previous" ]; }; then
-            if ! mv -- "$staging_dir/previous" "$plugins_dir"; then
+            if [ -e "$plugins_dir" ] || [ -L "$plugins_dir" ] || ! mv -- "$staging_dir/previous" "$plugins_dir"; then
                 echo "Error: could not restore Vim plugins; preserved at $staging_dir/previous" >&2
                 return 1
             fi
@@ -62,6 +62,10 @@ install_vim_plugins() (
 
     if [ -e "$plugins_dir" ] || [ -L "$plugins_dir" ]; then
         mv -- "$plugins_dir" "$staging_dir/previous"
+    fi
+    if [ -e "$plugins_dir" ] || [ -L "$plugins_dir" ]; then
+        echo "Error: Vim plugin destination was recreated: $plugins_dir" >&2
+        exit 1
     fi
     mv -- "$staging_dir/plugins" "$plugins_dir"
 )

@@ -38,12 +38,18 @@ mv() {
         return 43
     fi
     if [[ "$2" == */plugins ]] && [ "$DOTFILES_FIXTURE_FAIL_PUBLISH" = 1 ]; then
+        if [ "$DOTFILES_FIXTURE_RECREATE_TARGET" = 1 ]; then
+            printf 'newly created data\n' > "$DOTFILES_FIXTURE_PLUGINS_DIR"
+        fi
         return 44
     fi
     if [[ "$2" == */previous ]] && [ "$DOTFILES_FIXTURE_FAIL_RESTORE" = 1 ]; then
         return 45
     fi
     command mv "$@"
+    if [ "$2" = "$DOTFILES_FIXTURE_PLUGINS_DIR" ] && [ "$DOTFILES_FIXTURE_KILL_AFTER_BACKUP" = 1 ]; then
+        bash -c 'kill -KILL "$PPID"'
+    fi
     if [[ "$2" == */plugins ]] && [ "$DOTFILES_FIXTURE_INTERRUPT_PUBLISH" = 1 ]; then
         bash -c 'kill -TERM "$PPID"'
     fi
@@ -60,9 +66,13 @@ new_case() {
     DOTFILES_FIXTURE_FAIL_RESTORE=0
     DOTFILES_FIXTURE_INTERRUPT=0
     DOTFILES_FIXTURE_INTERRUPT_PUBLISH=0
+    DOTFILES_FIXTURE_RECREATE_TARGET=0
+    DOTFILES_FIXTURE_KILL_AFTER_BACKUP=0
     export DOTFILES_FIXTURE_PLUGINS_DIR DOTFILES_FIXTURE_EXPECTED_FILE DOTFILES_FIXTURE_FAIL_CLONE
     export DOTFILES_FIXTURE_FAIL_BACKUP DOTFILES_FIXTURE_FAIL_PUBLISH DOTFILES_FIXTURE_FAIL_RESTORE
     export DOTFILES_FIXTURE_INTERRUPT DOTFILES_FIXTURE_INTERRUPT_PUBLISH
+    export DOTFILES_FIXTURE_RECREATE_TARGET
+    export DOTFILES_FIXTURE_KILL_AFTER_BACKUP
 }
 
 seed_existing() {
@@ -178,3 +188,87 @@ preserved_sets=("${DOTFILES_FIXTURE_PLUGINS_DIR}".install.*/previous)
 diff -r "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/expected" "${preserved_sets[0]}"
 grep -F "preserved at ${preserved_sets[0]}" "$TEST_ROOT/output.log" > /dev/null
 echo "PASS: failed rollback retains the backup and reports its location"
+
+for failure in none publication; do
+    new_case "relative-symlink-$failure"
+    mkdir -p "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/external"
+    printf 'external plugin data\n' > "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/external/plugin.txt"
+    ln -s external "$DOTFILES_FIXTURE_PLUGINS_DIR"
+    DOTFILES_FIXTURE_EXPECTED_FILE="$DOTFILES_FIXTURE_PLUGINS_DIR/plugin.txt"
+    if [ "$failure" = publication ]; then
+        DOTFILES_FIXTURE_FAIL_PUBLISH=1
+        expect_failure 44
+        [ -L "$DOTFILES_FIXTURE_PLUGINS_DIR" ]
+        [ "$(readlink "$DOTFILES_FIXTURE_PLUGINS_DIR")" = external ]
+    else
+        run_install
+        [ ! -L "$DOTFILES_FIXTURE_PLUGINS_DIR" ]
+        [ -d "$DOTFILES_FIXTURE_PLUGINS_DIR/one" ]
+    fi
+    [ "$(cat "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/external/plugin.txt")" = 'external plugin data' ]
+    assert_no_staging
+    echo "PASS: relative symlink $failure preserves the external directory"
+done
+
+new_case dangling-symlink
+mkdir -p "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}"
+ln -s missing "$DOTFILES_FIXTURE_PLUGINS_DIR"
+DOTFILES_FIXTURE_FAIL_PUBLISH=1
+expect_failure 44
+[ -L "$DOTFILES_FIXTURE_PLUGINS_DIR" ]
+[ "$(readlink "$DOTFILES_FIXTURE_PLUGINS_DIR")" = missing ]
+assert_no_staging
+echo "PASS: failed publication restores the dangling symlink"
+
+new_case empty-directory
+mkdir -p "$DOTFILES_FIXTURE_PLUGINS_DIR"
+DOTFILES_FIXTURE_FAIL_PUBLISH=1
+expect_failure 44
+[ -d "$DOTFILES_FIXTURE_PLUGINS_DIR" ]
+[ -z "$(ls -A "$DOTFILES_FIXTURE_PLUGINS_DIR")" ]
+assert_no_staging
+echo "PASS: failed publication restores an empty directory"
+
+new_case 'existing backup'
+seed_existing
+existing_backup="${DOTFILES_FIXTURE_PLUGINS_DIR}.install.existing/previous"
+mkdir -p "$existing_backup"
+printf 'previous backup data\n' > "$existing_backup/data.txt"
+run_install
+[ "$(cat "$existing_backup/data.txt")" = 'previous backup data' ]
+staging_directories=("${DOTFILES_FIXTURE_PLUGINS_DIR}".install.*)
+[ "${#staging_directories[@]}" -eq 1 ]
+[ "${staging_directories[0]}" = "${existing_backup%/*}" ]
+echo "PASS: an existing backup in a same-name staging sibling stays untouched"
+
+new_case recreated-target
+mkdir -p "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/external"
+printf 'old external data\n' > "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/external/data.txt"
+ln -s external "$DOTFILES_FIXTURE_PLUGINS_DIR"
+DOTFILES_FIXTURE_EXPECTED_FILE="$DOTFILES_FIXTURE_PLUGINS_DIR/data.txt"
+DOTFILES_FIXTURE_FAIL_PUBLISH=1
+DOTFILES_FIXTURE_RECREATE_TARGET=1
+expect_failure 1
+[ ! -L "$DOTFILES_FIXTURE_PLUGINS_DIR" ]
+[ "$(cat "$DOTFILES_FIXTURE_PLUGINS_DIR")" = 'newly created data' ]
+preserved_sets=("${DOTFILES_FIXTURE_PLUGINS_DIR}".install.*/previous)
+[ "${#preserved_sets[@]}" -eq 1 ]
+[ -L "${preserved_sets[0]}" ]
+[ "$(readlink "${preserved_sets[0]}")" = external ]
+[ "$(cat "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/external/data.txt")" = 'old external data' ]
+grep -F "preserved at ${preserved_sets[0]}" "$TEST_ROOT/output.log" > /dev/null
+echo "PASS: rollback preserves a recreated destination and the previous symlink"
+
+new_case killed-after-backup
+seed_existing
+DOTFILES_FIXTURE_KILL_AFTER_BACKUP=1
+expect_failure 137
+[ ! -e "$DOTFILES_FIXTURE_PLUGINS_DIR" ]
+preserved_sets=("${DOTFILES_FIXTURE_PLUGINS_DIR}".install.*/previous)
+[ "${#preserved_sets[@]}" -eq 1 ]
+diff -r "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/expected" "${preserved_sets[0]}"
+command mv -- "${preserved_sets[0]}" "$DOTFILES_FIXTURE_PLUGINS_DIR"
+assert_preserved
+rm -rf -- "${preserved_sets[0]%/*}"
+assert_no_staging
+echo "PASS: forced termination leaves the previous set available for manual recovery"
