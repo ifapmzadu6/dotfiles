@@ -56,6 +56,21 @@ mv() {
 }
 export -f git mv
 
+rm() {
+    if [ "${1:-}" = -rf ] && [ "${2:-}" = -- ] && [[ "${3:-}" == *.install.* ]] && [ "$DOTFILES_FIXTURE_FAIL_CLEANUP" = 1 ]; then
+        printf '%s\n' "$3" >> "$DOTFILES_FIXTURE_CLEANUP_LOG"
+        # Simulate a recursive deletion that removes one file before failing.
+        if [ -f "$3/previous/working-plugin/plugin.txt" ]; then
+            command rm -- "$3/previous/working-plugin/plugin.txt"
+        elif [ -f "$3/plugins/one/plugin.txt" ]; then
+            command rm -- "$3/plugins/one/plugin.txt"
+        fi
+        return 48
+    fi
+    command rm "$@"
+}
+export -f rm
+
 new_case() {
     local case_name=$1
     DOTFILES_FIXTURE_PLUGINS_DIR="$TEST_ROOT/$case_name/pack/start"
@@ -69,11 +84,14 @@ new_case() {
     DOTFILES_FIXTURE_RECREATE_TARGET=0
     DOTFILES_FIXTURE_KILL_AFTER_BACKUP=0
     DOTFILES_FIXTURE_CONTEXT=plain
+    DOTFILES_FIXTURE_FAIL_CLEANUP=0
+    DOTFILES_FIXTURE_CLEANUP_LOG="$TEST_ROOT/$case_name/cleanup.log"
     export DOTFILES_FIXTURE_PLUGINS_DIR DOTFILES_FIXTURE_EXPECTED_FILE DOTFILES_FIXTURE_FAIL_CLONE
     export DOTFILES_FIXTURE_FAIL_BACKUP DOTFILES_FIXTURE_FAIL_PUBLISH DOTFILES_FIXTURE_FAIL_RESTORE
     export DOTFILES_FIXTURE_INTERRUPT DOTFILES_FIXTURE_INTERRUPT_PUBLISH
     export DOTFILES_FIXTURE_RECREATE_TARGET
     export DOTFILES_FIXTURE_KILL_AFTER_BACKUP
+    export DOTFILES_FIXTURE_FAIL_CLEANUP DOTFILES_FIXTURE_CLEANUP_LOG
 }
 
 seed_existing() {
@@ -122,6 +140,17 @@ assert_no_staging() {
     [ -z "$leftovers" ]
 }
 
+assert_retained_previous() {
+    local expected=${1:-"${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/expected"}
+    local backup matches=0
+    for backup in "${DOTFILES_FIXTURE_PLUGINS_DIR}".install.*/previous; do
+        if [ -d "$backup" ] && diff -r "$expected" "$backup" > /dev/null; then
+            matches=$((matches + 1))
+        fi
+    done
+    [ "$matches" -ge 1 ]
+}
+
 for failed_plugin in one two three; do
     new_case "clone-failure-$failed_plugin"
     seed_existing
@@ -154,10 +183,12 @@ run_install
 for plugin in one two three; do
     [ "$(cat "$DOTFILES_FIXTURE_PLUGINS_DIR/$plugin/plugin.txt")" = "$plugin" ]
 done
-assert_no_staging
+assert_retained_previous
 DOTFILES_FIXTURE_EXPECTED_FILE="$DOTFILES_FIXTURE_PLUGINS_DIR/one/plugin.txt"
+cp -R "$DOTFILES_FIXTURE_PLUGINS_DIR" "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/expected-new"
 run_install
-assert_no_staging
+assert_retained_previous
+assert_retained_previous "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/expected-new"
 echo "PASS: successful replacement and reinstallation publish all declared plugins"
 
 new_case backup-failure
@@ -184,7 +215,7 @@ for plugin in one two three; do
     [ "$(cat "$DOTFILES_FIXTURE_PLUGINS_DIR/$plugin/plugin.txt")" = "$plugin" ]
 done
 [ ! -e "$DOTFILES_FIXTURE_PLUGINS_DIR/previous" ]
-assert_no_staging
+assert_retained_previous
 echo "PASS: interruption after publication retains the complete new set"
 
 new_case rollback-failure
@@ -215,7 +246,14 @@ for failure in none publication; do
         [ -d "$DOTFILES_FIXTURE_PLUGINS_DIR/one" ]
     fi
     [ "$(cat "${DOTFILES_FIXTURE_PLUGINS_DIR%/*}/external/plugin.txt")" = 'external plugin data' ]
-    assert_no_staging
+    if [ "$failure" = publication ]; then
+        assert_no_staging
+    else
+        preserved_sets=("${DOTFILES_FIXTURE_PLUGINS_DIR}".install.*/previous)
+        [ "${#preserved_sets[@]}" -eq 1 ]
+        [ -L "${preserved_sets[0]}" ]
+        [ "$(readlink "${preserved_sets[0]}")" = external ]
+    fi
     echo "PASS: relative symlink $failure preserves the external directory"
 done
 
@@ -246,8 +284,8 @@ printf 'previous backup data\n' > "$existing_backup/data.txt"
 run_install
 [ "$(cat "$existing_backup/data.txt")" = 'previous backup data' ]
 staging_directories=("${DOTFILES_FIXTURE_PLUGINS_DIR}".install.*)
-[ "${#staging_directories[@]}" -eq 1 ]
-[ "${staging_directories[0]}" = "${existing_backup%/*}" ]
+[ "${#staging_directories[@]}" -eq 2 ]
+assert_retained_previous
 echo "PASS: an existing backup in a same-name staging sibling stays untouched"
 
 new_case recreated-target
@@ -307,6 +345,32 @@ for context in plain if not and or; do
     for plugin in one two three; do
         [ "$(cat "$DOTFILES_FIXTURE_PLUGINS_DIR/$plugin/plugin.txt")" = "$plugin" ]
     done
-    assert_no_staging
+    assert_retained_previous
     echo "PASS: $context context publishes the complete set on success"
 done
+
+for operation in clone rollback; do
+    new_case "partial-cleanup-$operation"
+    seed_existing
+    DOTFILES_FIXTURE_FAIL_CLEANUP=1
+    if [ "$operation" = clone ]; then
+        DOTFILES_FIXTURE_FAIL_CLONE=two
+    else
+        DOTFILES_FIXTURE_FAIL_PUBLISH=1
+    fi
+    expect_failure 48
+    assert_preserved
+    [ -s "$DOTFILES_FIXTURE_CLEANUP_LOG" ]
+    echo "PASS: partial cleanup after $operation failure preserves the complete working set"
+done
+
+new_case retained-after-publication
+seed_existing
+DOTFILES_FIXTURE_FAIL_CLEANUP=1
+run_install
+assert_retained_previous
+[ ! -e "$DOTFILES_FIXTURE_CLEANUP_LOG" ]
+for plugin in one two three; do
+    [ "$(cat "$DOTFILES_FIXTURE_PLUGINS_DIR/$plugin/plugin.txt")" = "$plugin" ]
+done
+echo "PASS: publication retains the complete previous set without recursive cleanup"

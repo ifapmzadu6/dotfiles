@@ -40,7 +40,13 @@ install_vim_plugins() (
 
     cleanup_plugins() {
         local status=$?
-        # Once the staged directory has moved, the complete replacement is live.
+        # Recursive deletion could partially destroy the only previous set.
+        # Keep it after publication so cleanup errors cannot prevent recovery.
+        if [ ! -d "$staging_dir/plugins" ] && { [ -e "$staging_dir/previous" ] || [ -L "$staging_dir/previous" ]; }; then
+            echo "Previous Vim plugins preserved at $staging_dir/previous" >&2
+            return "$status"
+        fi
+        # Before publication, restore any previous set that was moved aside.
         if [ -d "$staging_dir/plugins" ] && { [ -e "$staging_dir/previous" ] || [ -L "$staging_dir/previous" ]; }; then
             if [ -e "$plugins_dir" ] || [ -L "$plugins_dir" ] || ! mv -- "$staging_dir/previous" "$plugins_dir"; then
                 echo "Error: could not restore Vim plugins; preserved at $staging_dir/previous" >&2
