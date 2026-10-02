@@ -68,6 +68,7 @@ new_case() {
     DOTFILES_FIXTURE_INTERRUPT_PUBLISH=0
     DOTFILES_FIXTURE_RECREATE_TARGET=0
     DOTFILES_FIXTURE_KILL_AFTER_BACKUP=0
+    DOTFILES_FIXTURE_CONTEXT=plain
     export DOTFILES_FIXTURE_PLUGINS_DIR DOTFILES_FIXTURE_EXPECTED_FILE DOTFILES_FIXTURE_FAIL_CLONE
     export DOTFILES_FIXTURE_FAIL_BACKUP DOTFILES_FIXTURE_FAIL_PUBLISH DOTFILES_FIXTURE_FAIL_RESTORE
     export DOTFILES_FIXTURE_INTERRUPT DOTFILES_FIXTURE_INTERRUPT_PUBLISH
@@ -83,8 +84,16 @@ seed_existing() {
 }
 
 run_install() {
-    bash -c 'source "$1/lib.sh"; install_vim_plugins "$2" fixture/one.git fixture/two.git fixture/three.git' \
-        plugin-fixture "$REPO_DIR" "$DOTFILES_FIXTURE_PLUGINS_DIR" \
+    bash -c '
+        source "$1/lib.sh"
+        case "$3" in
+            plain) install_vim_plugins "$2" fixture/one.git fixture/two.git fixture/three.git ;;
+            if) if install_vim_plugins "$2" fixture/one.git fixture/two.git fixture/three.git; then exit 0; else exit "$?"; fi ;;
+            not) ! install_vim_plugins "$2" fixture/one.git fixture/two.git fixture/three.git ;;
+            and) install_vim_plugins "$2" fixture/one.git fixture/two.git fixture/three.git && true ;;
+            or) install_vim_plugins "$2" fixture/one.git fixture/two.git fixture/three.git || exit "$?" ;;
+        esac
+    ' plugin-fixture "$REPO_DIR" "$DOTFILES_FIXTURE_PLUGINS_DIR" "$DOTFILES_FIXTURE_CONTEXT" \
         > "$TEST_ROOT/output.log" 2>&1
 }
 
@@ -272,3 +281,32 @@ assert_preserved
 rm -rf -- "${preserved_sets[0]%/*}"
 assert_no_staging
 echo "PASS: forced termination leaves the previous set available for manual recovery"
+
+for context in plain if not and or; do
+    new_case "condition-failure-$context"
+    seed_existing
+    DOTFILES_FIXTURE_CONTEXT=$context
+    DOTFILES_FIXTURE_FAIL_CLONE=two
+    if [ "$context" = not ]; then
+        run_install
+    else
+        expect_failure 42
+    fi
+    assert_preserved
+    assert_no_staging
+    echo "PASS: $context context stops after clone failure and preserves the working set"
+
+    new_case "condition-success-$context"
+    seed_existing
+    DOTFILES_FIXTURE_CONTEXT=$context
+    if [ "$context" = not ]; then
+        expect_failure 1
+    else
+        run_install
+    fi
+    for plugin in one two three; do
+        [ "$(cat "$DOTFILES_FIXTURE_PLUGINS_DIR/$plugin/plugin.txt")" = "$plugin" ]
+    done
+    assert_no_staging
+    echo "PASS: $context context publishes the complete set on success"
+done
