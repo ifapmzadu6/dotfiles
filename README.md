@@ -28,5 +28,9 @@ local changes, it leaves them untouched and skips the update.
 
 Existing `~/.vimrc` and `~/.inputrc` files are preserved with a timestamped
 `.backup.YYYYMMDDHHMMSS` suffix before the symlinks are created. Correct links
-are left unchanged on subsequent runs. Vim plugins are treated as disposable
-and recreated from the declared list on every installation.
+are left unchanged on subsequent runs. Vim plugins are recreated from the
+declared list on every installation. All plugins are downloaded into a temporary
+directory before replacing the working set. If a download fails, the existing
+plugins are retained; if the replacement fails, the previous set is restored.
+
+Run the offline installer regression tests with `bash tests/vim_plugins_test.sh`.

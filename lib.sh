@@ -26,3 +26,42 @@ link_dotfile() {
     ln -s "$source_path" "$target_path"
     echo "Linked: $target_path -> $source_path"
 }
+
+# Keep the working plugin set until every replacement has been downloaded.
+install_vim_plugins() (
+    set -euo pipefail
+    # The subshell isolates these variables and keeps them available to EXIT.
+    plugins_dir=$1
+    shift
+
+    mkdir -p "$(dirname -- "$plugins_dir")"
+    staging_dir=$(mktemp -d "${plugins_dir}.install.XXXXXX")
+
+    cleanup_plugins() {
+        local status=$?
+        # Once the staged directory has moved, the complete replacement is live.
+        if [ -d "$staging_dir/plugins" ] && { [ -e "$staging_dir/previous" ] || [ -L "$staging_dir/previous" ]; }; then
+            if ! mv -- "$staging_dir/previous" "$plugins_dir"; then
+                echo "Error: could not restore Vim plugins; preserved at $staging_dir/previous" >&2
+                return 1
+            fi
+        fi
+        rm -rf -- "$staging_dir"
+        return "$status"
+    }
+    trap cleanup_plugins EXIT
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
+
+    mkdir "$staging_dir/plugins"
+    for plugin_url in "$@"; do
+        plugin_name=$(basename "$plugin_url" .git)
+        echo "Installing Vim plugin: $plugin_name"
+        git clone --depth 1 "$plugin_url" "$staging_dir/plugins/$plugin_name"
+    done
+
+    if [ -e "$plugins_dir" ] || [ -L "$plugins_dir" ]; then
+        mv -- "$plugins_dir" "$staging_dir/previous"
+    fi
+    mv -- "$staging_dir/plugins" "$plugins_dir"
+)
