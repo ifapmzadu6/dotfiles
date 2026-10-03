@@ -1,0 +1,26 @@
+name: Installer regression tests
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  installer-fixtures:
+    name: Installer fixtures (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Check shell syntax
+        run: /bin/bash -n install.sh lib.sh setup_gitconfig.sh setup_inputrc.sh setup_vim.sh setup_zsh.sh tests/vim_plugins_test.sh
+      - name: Run offline installer regression fixtures
+        run: /bin/bash tests/vim_plugins_test.sh
