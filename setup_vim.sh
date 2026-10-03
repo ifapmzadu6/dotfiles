@@ -9,8 +9,6 @@ link_dotfile "$SCRIPT_DIR/vimrc" "$HOME/.vimrc"
 
 # plugins
 PLUGINS_DIR="$HOME/.vim/pack/mypackage/start"
-rm -rf -- "$PLUGINS_DIR"
-mkdir -p "$PLUGINS_DIR"
 
 plugins=(
     "https://github.com/w0ng/vim-hybrid.git"
@@ -22,9 +20,4 @@ plugins=(
     "https://github.com/leafgarland/typescript-vim.git"
 )
 
-for plugin_url in "${plugins[@]}"; do
-    plugin_name=$(basename "${plugin_url}" .git)
-    plugin_dir="${PLUGINS_DIR}/${plugin_name}"
-    echo "Installing Vim plugin: $plugin_name"
-    git clone --depth 1 "$plugin_url" "$plugin_dir"
-done
+install_vim_plugins "$PLUGINS_DIR" "${plugins[@]}"
